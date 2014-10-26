@@ -1,0 +1,198 @@
+package numbertowords;
+
+/**
+ * This program outputs the numbers 0 to 1,000,000 in words using recursion.
+ *
+ * @author Saad Husain
+ * @version 1.0
+ * @since JDK 1.7
+ * @Wednesday, April 02, 2014
+ */
+public class NumberToWords {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        int i = 0;
+        System.out.println("\tNumber to Word Convertor\n");
+        System.out.println("This program outputs the numbers 0 - 1,000,000 in words.\n");
+        for (i = 0; i <= 1000000; i++) {
+            System.out.println(i + " - " + numberToWords(i));
+        }
+    }
+
+    /**
+     * This function recursively converts integers from 0 to 1,000,000 into
+     * words.
+     *
+     * @param n is the integer to be converted, but changes each time the
+     * function is called.
+     * @return The current number in words.
+     */
+    public static String numberToWords(int n) {
+        if (n < 20) {
+            return ones(n);
+        } else if ((n >= 20) && (n <= 99)) {
+            String num1 = Integer.toString(n);
+            char a = num1.charAt(0);
+            int aI = Character.getNumericValue(a);
+            String aS = tens(aI);
+            String aRest = numberToWords(n - (aI * 10));
+            if ((n - (aI * 10)) == 0) {
+                return aS + " ";
+            } else {
+                return aS + "-" + aRest;
+            }
+        } else if ((n >= 100) && (n <= 999)) {
+            String num2 = Integer.toString(n);
+            char b = num2.charAt(0);
+            int bI = Character.getNumericValue(b);
+            String bS = hundreds(bI);
+            String bRest = numberToWords(n - (bI * 100));
+            if ((n - (bI * 100)) == 0) {
+                return bS;
+            } else {
+                return bS + bRest;
+            }
+        } else if ((n >= 1000) && (n <= 9999)) {
+            String num3 = Integer.toString(n);
+            char c = num3.charAt(0);
+            int cI = Character.getNumericValue(c);
+            String cS = thousands(cI);
+            String cRest = numberToWords(n - (cI * 1000));
+            if ((n - (cI * 1000)) == 0) {
+                return cS;
+            } else {
+                return cS + cRest;
+            }
+        } else if ((n >= 10000) && (n <= 99999)) {
+            String num4 = Integer.toString(n);
+            char d = num4.charAt(0);
+            int dI = Character.getNumericValue(d);
+            String dS = tenThousands(dI);
+            String dRest = numberToWords(n - (dI * 10000));
+            char e = num4.charAt(1);
+            int eI = Character.getNumericValue(e);
+            if (eI != 0) {
+                int combine = (dI * 10) + eI;
+                String combineW = numberToWords(combine);
+                int thousandOne = eI * 1000;
+                dRest = numberToWords(n - (dI * 10000) - thousandOne);
+                if ((n - (dI * 10000) - thousandOne) == 0) {
+                    return combineW + "thousand";
+                } else {
+                    return combineW + "thousand " + dRest;
+                }
+            }
+            if ((n - (dI * 10000)) == 0) {
+                return dS;
+            } else {
+                return dS + dRest;
+            }
+        } else if ((n >= 100000) && (n <= 999999)) {
+            String num5 = Integer.toString(n);
+            char f = num5.charAt(0);
+            int fI = Character.getNumericValue(f);
+            String fS = hundredThousands(fI);
+            String fRest = numberToWords(n - (fI * 100000));
+            char g = num5.charAt(1);
+            int gI = Character.getNumericValue(g);
+            char h = num5.charAt(2);
+            int hI = Character.getNumericValue(h);
+            if ((gI != 0) || (hI != 0)) {
+                int combine1 = (fI * 100) + (gI * 10) + (hI);
+                String combineW1 = numberToWords(combine1);
+                int thousandOne1 = (gI * 10000) + (hI * 1000);
+                fRest = numberToWords(n - (fI * 100000) - thousandOne1);
+                if ((n - (fI * 100000) - thousandOne1) == 0) {
+                    return combineW1 + "thousand";
+                } else {
+                    return combineW1 + "thousand " + fRest;
+                }
+            }
+            if ((n - (fI * 100000)) == 0) {
+                return fS;
+            } else {
+                return fS + fRest;
+            }
+        } else if (n == 1000000) {
+            return "one million";
+        }
+        return "Isa Too Mut!";
+    }
+
+    /**
+     * This function contains the words of the numbers 0 to 19 in words as a
+     * String array.
+     *
+     * @param a is the integer to convert from 0 to 19.
+     * @return The word corresponding to the number.
+     */
+    public static String ones(int a) {
+        String[] onesWords = {"zero ", "one ", "two ", "three ", "four ", "five ", "six ", "seven ", "eight ", "nine ", "ten ", "eleven ", "twelve ", "thirteen ", "fourteen ", "fifteen ", "sixteen ", "seventeen ", "eighteen ", "nineteen "};
+        return onesWords[a];
+    }
+
+    /**
+     * This function contains the words of the tens 20 to 90 in words as a
+     * String array.
+     *
+     * @param a is the integer corresponding to the tens column to convert.
+     * @return The word corresponding to the number.
+     */
+    public static String tens(int a) {
+        String[] tensWords = {" - ", " - ", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+        return tensWords[a];
+    }
+
+    /**
+     * This function contains the words of the hundreds 100 to 900 in words as a
+     * String array.
+     *
+     * @param a is the integer corresponding to the hundreds column to convert.
+     * @return The word corresponding to the number.
+     */
+    public static String hundreds(int a) {
+        String[] hundredsWords = {"-", "one hundred ", "two hundred ", "three hundred ", "four hundred ", "five hundred ", "six hundred ", "seven hundred ", "eight hundred ", "nine hundred "};
+        return hundredsWords[a];
+    }
+
+    /**
+     * This function contains the words of the thousands 1000 to 9000 in words
+     * as a String array.
+     *
+     * @param a is the integer corresponding to the thousands column to convert.
+     * @return The word corresponding to the number.
+     */
+    public static String thousands(int a) {
+        String[] thousandsWords = {"-", "one thousand ", "two thousand ", "three thousand ", "four thousand ", "five thousand ", "six thousand ", "seven thousand ", "eight thousand ", "nine thousand"};
+        return thousandsWords[a];
+    }
+
+    /**
+     * This function contains the words of the hundreds 10,000 to 90,000 in
+     * words as a String array.
+     *
+     * @param a is the integer corresponding to the ten thousands column to
+     * convert.
+     * @return The word corresponding to the number.
+     */
+    public static String tenThousands(int a) {
+        String[] tenThousandsWords = {"-", "ten thousand ", "twenty thousand ", "thirty thousand ", "forty thousand ", "fifty thousand ", "sixty thousand ", "seventy thousand ", "eighty thousand ", "ninety thousand"};
+        return tenThousandsWords[a];
+    }
+
+    /**
+     * This function contains the words of the hundred thousands 100,000 to
+     * 900,000 in words as a String array.
+     *
+     * @param a is the integer corresponding to the hundred thousands column to
+     * convert.
+     * @return The word corresponding to the number.
+     */
+    public static String hundredThousands(int a) {
+        String[] hundredThousandsWords = {"-", "one hundred thousand ", "two hundred thousand ", "three hundred thousand ", "four hundred thousand ", "five hundred thousand ", "six hundred thousand ", "seven hundred thousand ", "eight hundred thousand ", "nine hundred thousand"};
+        return hundredThousandsWords[a];
+    }
+}
